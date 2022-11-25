@@ -159,7 +159,7 @@ export function completeDirectGroupInfo(usersState: UsersState, teammateNameDisp
     const profilesIds = profilesInChannel[channel.id];
     const gm = {...channel};
 
-    if (profilesIds) {
+    if (profilesIds && !gm.display_name) {
         gm.display_name = getGroupDisplayNameFromUserIds(profilesIds, profiles, currentUserId, teammateNameDisplay, omitCurrentUser);
         return gm;
     }
@@ -168,7 +168,7 @@ export function completeDirectGroupInfo(usersState: UsersState, teammateNameDisp
     const users = Object.keys(profiles).map((key) => profiles[key]);
     const userIds: Set<string> = new Set();
     usernames.forEach((username: string) => {
-        const u = users.find((p): boolean => p.username === username);
+        const u = users.find((p): boolean => p.username === username.trim());
         if (u) {
             userIds.add(u.id);
         }
@@ -190,7 +190,7 @@ function newCompleteDirectGroupInfo(currentUserId: string, profiles: IDMappedObj
     const profilesIds = profilesInChannel[channel.id];
     const gm = {...channel};
 
-    if (profilesIds) {
+    if (profilesIds && !gm.display_name) {
         gm.display_name = getGroupDisplayNameFromUserIds(profilesIds, profiles, currentUserId, teammateNameDisplay);
         return gm;
     }
@@ -199,7 +199,7 @@ function newCompleteDirectGroupInfo(currentUserId: string, profiles: IDMappedObj
     const users = Object.keys(profiles).map((key) => profiles[key]);
     const userIds: Set<string> = new Set();
     usernames.forEach((username: string) => {
-        const u = users.find((p): boolean => p.username === username);
+        const u = users.find((p): boolean => p.username === username.trim());
         if (u) {
             userIds.add(u.id);
         }

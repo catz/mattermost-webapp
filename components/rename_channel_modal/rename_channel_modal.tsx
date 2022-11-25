@@ -259,6 +259,20 @@ export class RenameChannelModal extends React.PureComponent<Props, State> {
             <Tooltip id='urlTooltip'>{fullUrl}</Tooltip>
         );
 
+        const title = this.props.channel.type === Constants.GM_CHANNEL ? (
+            <FormattedMessage
+                id='rename_conversation.title'
+                defaultMessage='Rename Conversation'
+            />
+        ) : (
+            <FormattedMessage
+                id='rename_channel.title'
+                defaultMessage='Rename Channel'
+            />
+        );
+
+        const isUrlChangeAllowed = this.props.channel.type !== Constants.GM_CHANNEL;
+
         return (
             <Modal
                 dialogClassName='a11y__modal'
@@ -274,10 +288,7 @@ export class RenameChannelModal extends React.PureComponent<Props, State> {
                         componentClass='h1'
                         id='renameChannelModalLabel'
                     >
-                        <FormattedMessage
-                            id='rename_channel.title'
-                            defaultMessage='Rename Channel'
-                        />
+                        {title}
                     </Modal.Title>
                 </Modal.Header>
                 <form role='form'>
@@ -302,31 +313,33 @@ export class RenameChannelModal extends React.PureComponent<Props, State> {
                             />
                             {displayNameError}
                         </div>
-                        <div className='form-group'>
-                            <label className='control-label'>{urlInputLabel}</label>
+                        {isUrlChangeAllowed &&
+                            <div className='form-group'>
+                                <label className='control-label'>{urlInputLabel}</label>
 
-                            <div className={urlInputClass}>
-                                <OverlayTrigger
-                                    delayShow={Constants.OVERLAY_TIME_DELAY}
-                                    placement='top'
-                                    overlay={urlTooltip}
-                                >
-                                    <span className='input-group-addon'>{shortUrl}</span>
-                                </OverlayTrigger>
-                                <input
-                                    onChange={this.onNameChange}
-                                    type='text'
-                                    className='form-control'
-                                    id='channel_name'
-                                    value={this.state.channelName}
-                                    maxLength={Constants.MAX_CHANNELNAME_LENGTH}
-                                    readOnly={readOnlyHandleInput}
-                                    aria-label={formatMessage({id: 'rename_channel.title', defaultMessage: 'Rename Channel'}).toLowerCase()}
-                                />
+                                <div className={urlInputClass}>
+                                    <OverlayTrigger
+                                        delayShow={Constants.OVERLAY_TIME_DELAY}
+                                        placement='top'
+                                        overlay={urlTooltip}
+                                    >
+                                        <span className='input-group-addon'>{shortUrl}</span>
+                                    </OverlayTrigger>
+                                    <input
+                                        onChange={this.onNameChange}
+                                        type='text'
+                                        className='form-control'
+                                        id='channel_name'
+                                        value={this.state.channelName}
+                                        maxLength={Constants.MAX_CHANNELNAME_LENGTH}
+                                        readOnly={readOnlyHandleInput}
+                                        aria-label={formatMessage({id: 'rename_channel.title', defaultMessage: 'Rename Channel'}).toLowerCase()}
+                                    />
+                                </div>
+                                {urlHelpText}
+                                {urlErrors}
                             </div>
-                            {urlHelpText}
-                            {urlErrors}
-                        </div>
+                        }
                         {serverError}
                     </Modal.Body>
                     <Modal.Footer>

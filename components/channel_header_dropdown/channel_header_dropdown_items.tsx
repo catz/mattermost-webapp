@@ -246,11 +246,11 @@ export default class ChannelHeaderDropdown extends React.PureComponent<Props> {
                         />
                         <Menu.ItemToggleModalRedux
                             id='channelRename'
-                            show={!isArchived && channel.type !== Constants.DM_CHANNEL && channel.type !== Constants.GM_CHANNEL}
+                            show={!isArchived && channel.type !== Constants.DM_CHANNEL}
                             modalId={ModalIdentifiers.RENAME_CHANNEL}
                             dialogType={RenameChannelModal}
                             dialogProps={{channel}}
-                            text={localizeMessage('channel_header.rename', 'Rename Channel')}
+                            text={channel.type === Constants.GM_CHANNEL ? localizeMessage('channel_header.renameConversation', 'Rename Conversation') : localizeMessage('channel_header.rename', 'Rename Channel')}
                         />
                     </ChannelPermissionGate>
                     <ChannelPermissionGate
